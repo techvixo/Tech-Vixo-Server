@@ -48,56 +48,59 @@ async function run() {
         </tr>
         <tr>
           <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Name</td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service.name}</td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service?.name}</td>
         </tr>
         <tr>
           <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Email</td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service.email}</td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service?.email}</td>
         </tr>
         <tr>
           <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Number</td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service.number}</td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service?.number}</td>
         </tr>
         <tr>
           <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Service Name</td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service.serviceName}</td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service?.serviceName}</td>
         </tr>
         <tr>
           <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Note</td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service.note}</td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service?.note}</td>
         </tr>
       </table>
-    
-      <h4 style="font-family: Arial, sans-serif;">Service Details</h4>
-      <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
-        <tr>
-          <th style="border: 1px solid #dddddd; text-align: left; padding: 8px; background-color: #f2f2f2;">Field</th>
-          <th style="border: 1px solid #dddddd; text-align: left; padding: 8px; background-color: #f2f2f2;">Details</th>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Service Title</td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service.serviceDetail.title}</td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Duration</td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service.serviceDetail.day}</td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Link</td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><a href="${service.serviceDetail.link}" style="color: #007BFF; text-decoration: none;">View Service</a></td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Items</td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
-            <ul style="padding-left: 20px;">
-              ${service.serviceDetail.items.map(item => `<li>${item}</li>`).join('')}
-            </ul>
-          </td>
-        </tr>
-      </table>
+      
+      ${service?.serviceDetail?.title ? `
+        <h4 style="font-family: Arial, sans-serif;">Service Details</h4>
+        <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
+          <tr>
+            <th style="border: 1px solid #dddddd; text-align: left; padding: 8px; background-color: #f2f2f2;">Field</th>
+            <th style="border: 1px solid #dddddd; text-align: left; padding: 8px; background-color: #f2f2f2;">Details</th>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Service Title</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service.serviceDetail.title}</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Duration</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service.serviceDetail.day}</td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Link</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><a href="${service.serviceDetail.link}" style="color: #007BFF; text-decoration: none;">View Service</a></td>
+          </tr>
+          <tr>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Items</td>
+            <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
+              <ul style="padding-left: 20px;">
+                ${service.serviceDetail.items.map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            </td>
+          </tr>
+        </table>
+      ` : ''}
     
       <p style="font-family: Arial, sans-serif; color: #555555;">This is an automated email. Please do not reply.</p>
     `;
+    
     
     
 
