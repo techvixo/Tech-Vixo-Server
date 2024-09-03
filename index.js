@@ -22,6 +22,8 @@ async function run() {
     const usersCollection = client.db("TechVixoDB").collection("users");
     const servicesCollection = client.db("TechVixoDB").collection("services");
     const clientQueriesCollection = client.db("TechVixoDB").collection("clientQueries");
+    const contactQueriesCollection = client.db("TechVixoDB").collection("contactQueries");
+
 
     // Nodemailer Transporter Configuration
     const transporter = nodemailer.createTransport({
@@ -31,6 +33,69 @@ async function run() {
         pass: process.env.EMAIL_PASS  // Your email password or app-specific password (from .env)
       }
     });
+
+    app.post('/contact-request', async (req, res) => {
+      const service = req.body;
+console.log(service);
+      // Insert service request into the database
+      const result = await contactQueriesCollection.insertOne(service);
+      // Email Content Formatting
+      const emailContent = `
+      <h3>New Service Request From Tech-Vixo</h3>
+      <table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
+        <tr>
+          <th style="border: 1px solid #dddddd; text-align: left; padding: 8px; background-color: #f2f2f2;">Field</th>
+          <th style="border: 1px solid #dddddd; text-align: left; padding: 8px; background-color: #f2f2f2;">Details</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Name</td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service?.name}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Email</td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service?.email}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Number</td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service?.phone}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Organization Name</td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service?.organization_name}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Country Name</td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service?.country}</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Note</td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${service?.note}</td>
+        </tr>
+      </table>
+    
+      <p style="font-family: Arial, sans-serif; color: #555555;">This is an automated email. Please do not reply.</p>
+    `;
+ 
+      // Email Options
+      const mailOptions = {
+        from:`${service?.email}` , // Sender address
+        to: process.env.EMAIL_USER, // Replace with the actual recipient's email
+        subject: `${service?.organization_name}`,
+        html: emailContent
+      };
+
+      // Send the email
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          res.status(500).send({ message: 'Failed to send email', error });
+        } else {
+          console.log('Email sent: ' + info.response);
+          res.status(200).send({ message: 'Service request received and email sent successfully', result });
+        }
+      });
+    });
+
 
     app.post('/service-request', async (req, res) => {
       const service = req.body;
@@ -100,10 +165,7 @@ async function run() {
     
       <p style="font-family: Arial, sans-serif; color: #555555;">This is an automated email. Please do not reply.</p>
     `;
-    
-    
-    
-
+ 
       // Email Options
       const mailOptions = {
         from:`${service?.email}` , // Sender address
