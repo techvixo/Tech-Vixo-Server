@@ -36,7 +36,6 @@ async function run() {
 
     app.post('/contact-request', async (req, res) => {
       const service = req.body;
-console.log(service);
       // Insert service request into the database
       const result = await contactQueriesCollection.insertOne(service);
       // Email Content Formatting
