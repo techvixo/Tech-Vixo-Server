@@ -1,2 +1,0 @@
-# Tech-Vixo-Server
-optional
